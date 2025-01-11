@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicação de Marcação de Trabalho</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Modo Escuro */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .login-container {
+            background-color: #1c1c1c;
+        }
+
+        .login-box {
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .login-box {
+            background-color: #2c2c2c;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        body.dark-mode .login-box input {
+            background-color: #333;
+            color: white;
+            border: 1px solid #444;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background-color: #216788;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .login-box button {
+            background-color:#216788;
+        }
+
+        .login-box button:hover {
+            background-color: #216788;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .container {
+            background-color: #2c2c2c;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        body.dark-mode .tabs {
+            border-bottom: 2px solid #444;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .tab.active {
+            border-color: #216788;
+            font-weight: bold;
+            color: #216788;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .tab.active {
+            border-color: #216788;
+            color: #216788;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 10px;
+        }
+
+        .toggle-switch {
+            margin-top: 15px;
+        }
+
+        form label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            margin-top: 10px;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        body.dark-mode input, body.dark-mode select, body.dark-mode button {
+            background-color: #333;
+            color: white;
+            border: 1px solid #444;
+        }
+
+        button {
+            background-color: #216788;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode button {
+            background-color: #216788;
+        }
+
+        button:hover {
+            background-color: #184a63;
+        }
+
+        body.dark-mode button:hover {
+            background-color: #216788;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #216788;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+
+        body.dark-mode .notification {
+            background-color: #216788;
+        }
+
+        .dropdown-content a {
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            color: #216788;
+        }
+
+        body.dark-mode .dropdown-content a {
+            color: #4caf50;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f0f0f0;
+        }
+
+        body.dark-mode .dropdown-content a:hover {
+            background-color: #333;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .login-box {
+                width: 90%;
+            }
+        }
+
+        /* Ajustes para Painel de Controle */
+        .booking {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .booking {
+            background-color: #333;
+            color: white;
+        }
+
+        .booking p {
+            margin: 5px 0;
+        }
+
+        .booking button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        body.dark-mode .booking button {
+            background-color: #216788;
+        }
+
+        .booking button:hover {
+            background-color: #0056b3;
+        }
+
+        body.dark-mode .booking button:hover {
+            background-color: #216788;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Página de Login -->
+<div id="loginPage" class="login-container">
+    <div class="login-box">
+        <h2>Entrar</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Digite o nome de usuário" required>
+            <input type="password" id="password" placeholder="Digite a senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <div class="error" id="loginError"></div>
+    </div>
+</div>
+
+<!-- Conteúdo Principal -->
+<div id="mainContent" style="display: none;">
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('booking')">Agendar Serviço</div>
+            <div class="tab" onclick="showTab('dashboard')">Painel de Controle</div>
+            <div class="tab" onclick="showTab('options')">Opções</div>
+        </div>
+
+        <!-- Seção de Agendamento -->
+        <div id="booking" class="tab-content active">
+            <h2>Agendar Serviço</h2>
+            <form id="bookingForm">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" required>
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" required>
+                <label for="phone">Telefone:</label>
+                <input type="tel" id="phone" required>
+                <label for="service">Serviço Necessário:</label>
+                <input type="text" id="service" placeholder="Digite o serviço que precisa" required>
+                <label for="date">Data:</label>
+                <input type="date" id="date" required>
+                <label for="time">Hora:</label>
+                <input type="time" id="time" required>
+                <button type="submit"><i class="fas fa-calendar-check"></i> Agendar Agora</button>
+            </form>
+        </div>
+
+        <!-- Seção do Painel de Controle -->
+        <div id="dashboard" class="tab-content">
+            <h2>Painel de Controle da Loja</h2>
+            <input type="text" id="searchBar" placeholder="Pesquisar agendamentos..." onkeyup="filterBookings()">
+            <div id="bookingsList">
+                <p>Sem agendamentos por enquanto.</p>
+            </div>
+        </div>
+
+        <!-- Seção de Opções -->
+        <div id="options" class="tab-content">
+            <h2>Opções</h2>
+            <button onclick="toggleDarkMode()"><i class="fas fa-moon"></i> Modo Escuro</button>
+        </div>
+    </div>
+</div>
+
+<!-- Notificação de sucesso -->
+<div class="notification" id="notification">Agendamento Enviado com Sucesso!</div>
+
+<script>
+    const correctUsername = "Filipe";
+    const correctPassword = "2007";
+
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+
+    loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === correctUsername && password === correctPassword) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        } else {
+            loginError.textContent = "Nome de usuário ou senha incorretos!";
+        }
+    });
+
+    function showTab(tabId) {
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => tab.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        document.querySelector(`#${tabId}`).classList.add('active');
+        document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    const bookingForm = document.getElementById('bookingForm');
+    const bookingsList = document.getElementById('bookingsList');
+    let bookings = [];
+
+    bookingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const booking = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            service: document.getElementById('service').value,
+            date: document.getElementById('date').value,
+            time: document.getElementById('time').value,
+            status: 'Pendente'
+        };
+
+        bookings.push(booking);
+        displayBookings();
+        bookingForm.reset();
+        showNotification('Agendamento Enviado com Sucesso!');
+    });
+
+    function displayBookings() {
+        bookingsList.innerHTML = '';
+        bookings.forEach((booking, index) => {
+            bookingsList.innerHTML += `
+                <div class="booking">
+                    <p><strong>Nome:</strong> ${booking.name}</p>
+                    <p><strong>E-mail:</strong> ${booking.email}</p>
+                    <p><strong>Telefone:</strong> ${booking.phone}</p>
+                    <p><strong>Serviço:</strong> ${booking.service}</p>
+                    <p><strong>Data:</strong> ${booking.date}</p>
+                    <p><strong>Hora:</strong> ${booking.time}</p>
+                    <p><strong>Status:</strong> ${booking.status}</p>
+                    <button onclick="updateStatus(${index}, 'Aceito')">Aceitar</button>
+                    <button onclick="updateStatus(${index}, 'Recusado')">Recusar</button>
+                    <button onclick="deleteBooking(${index})">Excluir</button>
+                </div>
+            `;
+        });
+    }
+
+    function updateStatus(index, status) {
+        bookings[index].status = status;
+        displayBookings();
+    }
+
+    function deleteBooking(index) {
+        bookings.splice(index, 1);
+        displayBookings();
+    }
+
+    function filterBookings() {
+        const filter = document.getElementById('searchBar').value.toLowerCase();
+        const filtered = bookings.filter(booking =>
+            booking.name.toLowerCase().includes(filter) ||
+            booking.email.toLowerCase().includes(filter)
+        );
+        bookingsList.innerHTML = '';
+        filtered.forEach((booking, index) => {
+            bookingsList.innerHTML += `
+                <div class="booking">
+                    <p><strong>Nome:</strong> ${booking.name}</p>
+                    <p><strong>E-mail:</strong> ${booking.email}</p>
+                    <p><strong>Telefone:</strong> ${booking.phone}</p>
+                    <p><strong>Serviço:</strong> ${booking.service}</p>
+                    <p><strong>Data:</strong> ${booking.date}</p>
+                    <p><strong>Hora:</strong> ${booking.time}</p>
+                    <p><strong>Status:</strong> ${booking.status}</p>
+                    <button onclick="updateStatus(${index}, 'Aceito')">Aceitar</button>
+                    <button onclick="updateStatus(${index}, 'Recusado')">Recusar</button>
+                    <button onclick="deleteBooking(${index})">Excluir</button>
+                </div>
+            `;
+        });
+    }
+
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.style.opacity = '1';
+        notification.style.display = 'block';
+        setTimeout(() => notification.style.opacity = '0', 3000);
+        setTimeout(() => notification.style.display = 'none', 3500);
+    }
+</script>
+
+</body>
+</html>
